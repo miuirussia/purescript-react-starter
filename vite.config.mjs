@@ -7,6 +7,7 @@ import inspect from 'vite-plugin-inspect';
 
 import path from 'node:path';
 import child_process from 'node:child_process';
+import resolveConfig from './resolve.js';
 
 const hash = child_process.execSync('git describe --always --dirty=-dirty', { encoding: 'utf8' }).replace(/\n$/, '');
 
@@ -16,11 +17,7 @@ const targets = browserslist(browserslist.loadConfig({ path: process.cwd() }));
 
 export default defineConfig(() => ({
   resolve: {
-    alias: {
-      '@/': `${path.resolve(__dirname, 'src')}/`,
-      Main: path.resolve(__dirname, 'output/Main'),
-      'Test.Main': path.resolve(__dirname, 'output/Test.Main'),
-    },
+    alias: resolveConfig(p => path.resolve(__dirname, p)),
   },
   plugins: [inspect(), splitVendorChunkPlugin(), legacy({ targets })],
   css: {
