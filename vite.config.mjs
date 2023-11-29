@@ -3,6 +3,7 @@ import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import autoprefixer from 'autoprefixer';
 import browserslist from 'browserslist';
 import legacy from '@vitejs/plugin-legacy';
+import inspect from 'vite-plugin-inspect';
 
 import path from 'node:path';
 import child_process from 'node:child_process';
@@ -21,7 +22,7 @@ export default defineConfig(() => ({
       'Test.Main': path.resolve(__dirname, 'output/Test.Main'),
     },
   },
-  plugins: [splitVendorChunkPlugin(), legacy({ targets })],
+  plugins: [inspect(), splitVendorChunkPlugin(), legacy({ targets })],
   css: {
     postcss: {
       plugins: [autoprefixer({})],
