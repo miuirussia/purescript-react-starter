@@ -1,0 +1,72 @@
+{
+  "name": "purescript-react-starter",
+  "version": "0.0.1",
+  "description": "Purescript React Starter",
+  "main": "src/index.js",
+  "repository": "git@github.com:miuirussia/purescript-react-starter.git",
+  "author": "Kirill Kuznetsov <kdevlab@yandex.ru>",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "patch-package && ./postinstall.sh && spago install",
+    "format:operators": "spago sources | xargs purs-tidy generate-operators > .tidyoperators",
+    "format": "purs-tidy format-in-place 'src/**/*.purs' && eslint --fix 'src/**/*.js'",
+    "eslint": "eslint 'src/**/*.js'",
+    "install-dependencies": "yarn install --frozen-lock",
+    "spago:build": "rm -rf output && spago --config ./production.dhall build --purs-args '--censor-codes=ImplicitQualifiedImportReExport --strict'",
+    "spago:start": "rm -rf output && spago build --purs-args '--censor-codes=ImplicitQualifiedImportReExport' --watch --clear-screen",
+    "spago:dev": "yarn install-dependencies && rm -rf output && spago build --purs-args '--censor-codes=ImplicitQualifiedImportReExport' --clear-screen",
+    "vite:build": "rm -rf ./node_modules/.vite && rm -rf dist && vite build",
+    "vite:start": "rm -rf ./node_modules/.vite && vite",
+    "build": "run-s test spago:build eslint vite:build",
+    "release": "yarn install-dependencies && run-s build",
+    "start": "yarn install-dependencies && run-s build serve",
+    "dev": "yarn install-dependencies && run-p -l spago:start vite:start",
+    "serve": "ws --port 8080 --log.format tiny --directory dist --spa index.html --compress --stack lws-request-monitor lws-log lws-rewrite lws-spa lws-static lws-compress",
+    "test": "rm -rf output && spago -x test.dhall -q test --purs-args '--censor-codes=ImplicitQualifiedImportReExport'"
+  },
+  "dependencies": {
+    "@tanstack/react-virtual": "3.0.0-beta.54",
+    "@tanstack/virtual-core": "3.0.0-beta.54",
+    "@testing-library/react": "14.1.2",
+    "@testing-library/user-event": "14.5.1",
+    "error-stack-parser": "2.1.4",
+    "jsdom": "23.0.0",
+    "jsdom-global": "3.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "whatwg-fetch": "3.6.19"
+  },
+  "devDependencies": {
+    "@kdeveloper/purs-tidy": "0.10.0",
+    "@vitejs/plugin-legacy": "5.2.0",
+    "autoprefixer": "10.4.16",
+    "browserslist": "4.22.1",
+    "eslint": "8.54.0",
+    "eslint-config-prettier": "9.0.0",
+    "eslint-plugin-import": "2.29.0",
+    "eslint-plugin-prettier": "5.0.1",
+    "eslint-plugin-react": "7.33.2",
+    "jqn": "1.0.10",
+    "local-web-server": "5.3.0",
+    "npm-run-all": "4.1.5",
+    "patch-package": "8.0.0",
+    "postcss": "8.4.31",
+    "prettier": "3.1.0",
+    "purescript-installer": "0.3.5",
+    "purescript-psa": "0.8.2",
+    "purs-backend-es": "1.4.2",
+    "sass": "1.69.5",
+    "scss-reset": "1.4.2",
+    "spago": "0.21.0",
+    "terser": "5.24.0",
+    "vite": "5.0.4"
+  },
+  "nativeDependencies": {
+    "purescript": "0.15.14-0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "IE >= 10"
+  ]
+}
