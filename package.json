@@ -25,8 +25,8 @@
     "test": "rm -rf output && spago -x test.dhall -q test --purs-args '--censor-codes=ImplicitQualifiedImportReExport'"
   },
   "dependencies": {
-    "@tanstack/react-virtual": "3.0.0-beta.54",
-    "@tanstack/virtual-core": "3.0.0-beta.54",
+    "@tanstack/react-virtual": "3.0.0-beta.68",
+    "@tanstack/virtual-core": "3.0.0-beta.68",
     "@testing-library/react": "14.1.2",
     "@testing-library/user-event": "14.5.1",
     "error-stack-parser": "2.1.4",
