@@ -1,4 +1,5 @@
 /* eslint-env node */
+import MagicString from 'magic-string';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import autoprefixer from 'autoprefixer';
 import browserslist from 'browserslist';
@@ -21,7 +22,9 @@ const dynamicImport = () => ({
   name: 'dynamic-imports',
   transform(src, currentFile) {
     const moduleImportsToRemove = ['App.DynamicImport'];
-    const withDynamicImports = src.replaceAll(r, (match, g, moduleName, componentName) => {
+    const s = new MagicString(src);
+
+    const withDynamicImports = s.replaceAll(r, (match, g, moduleName, componentName) => {
       moduleImportsToRemove.push(moduleName);
       const modulePath = `../${moduleName.replaceAll(/_/g, '.')}/index.js`;
       return `(() => import("${modulePath}").then(r => r.${componentName}))`;
@@ -31,17 +34,20 @@ const dynamicImport = () => ({
         transformed.replaceAll(new RegExp(`import \\* as ${moduleName} from (.*?);`, 'g'), ''),
       withDynamicImports,
     );
+
+    const code = withStaticImportsRemoved.toString();
+
     const checkIfModulesAreIsolated =
       // This part matches modules that are being accessed with '.'
       // Say your module name in JS is My_Module. This checks that `My_Module.` never occures
       // `My_Module.myFn` is not allowed in lazy loading to have properly isolated modules
-      moduleImportsToRemove.flatMap((moduleName) =>
-        withStaticImportsRemoved.includes(`${moduleName}.`) ? [moduleName] : [],
-      );
+      moduleImportsToRemove.flatMap((moduleName) => (code.includes(`${moduleName}.`) ? [moduleName] : []));
 
     checkIfModulesAreIsolated.map((moduleName) => this.error(`${currentFile} contains references to ${moduleName}.`));
 
-    return { code: withStaticImportsRemoved };
+    if (withStaticImportsRemoved.hasChanged()) {
+      return { code, map: withStaticImportsRemoved.generateDecodedMap() };
+    }
   },
 });
 
