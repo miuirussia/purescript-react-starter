@@ -15,7 +15,7 @@ const hashify = (name) => name.replace('[hash]', hash);
 
 const targets = browserslist(browserslist.loadConfig({ path: process.cwd() }));
 
-const r = /(App_DynamicImport\.dynamicImport\(([A-Z]\w*)\.([A-Za-z_]\w*)\))/g;
+const r = /(App_DynamicImport\.dynamicImport\(([A-Z]\w*)\.([a-z_]\w*)\))/g;
 
 const dynamicImport = () => ({
   name: 'dynamic-imports',
