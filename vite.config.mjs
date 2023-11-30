@@ -1,5 +1,4 @@
 /* eslint-env node */
-import MagicString from 'magic-string';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import autoprefixer from 'autoprefixer';
 import browserslist from 'browserslist';
@@ -8,6 +7,8 @@ import inspect from 'vite-plugin-inspect';
 
 import path from 'node:path';
 import child_process from 'node:child_process';
+
+import MagicString from 'magic-string';
 import resolveConfig from './resolve.js';
 
 const hash = child_process.execSync('git describe --always --dirty=-dirty', { encoding: 'utf8' }).replace(/\n$/, '');
