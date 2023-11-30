@@ -19,6 +19,7 @@ function install_spago() {
   echo "Using spago compiled from source"
 }
 
-yarn install-purescript "--purs-ver=$PURS_VER"
+yarn --silent install-purescript "--purs-ver=$PURS_VER"
 mv "$WORK_DIR/purs" "$WORK_DIR/node_modules/.bin/purs"
+"$WORK_DIR"/node_modules/.bin/purs --version > /dev/null && echo "Purescript successfully installed"
 ("$WORK_DIR"/node_modules/.bin/spago version > /dev/null && echo "Using precompiled spago from npm") || install_spago
